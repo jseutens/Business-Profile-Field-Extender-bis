@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Business Profile Field Extender
  * Plugin URI: http://wpbeaches.com
- * Description: Modifies the Business Profile plugin to include info for Florist business.
+ * Description: Modifies the Business Profile plugin to include a mobile number field.
  * Version: 0.0.1
  * Author: Neil Gowran
  * Author URI: http://wpbeaches.com
