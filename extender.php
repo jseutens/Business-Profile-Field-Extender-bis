@@ -68,7 +68,7 @@ function prefix_component_callbacks( $callbacks ) {
 
 /**
  * The callback - Print the mobile number
- * @since 0.0.1
+ * 
  */
 function prefix_print_mobile() {
 	// This is the mark up - is the same format as the original but has the number in a clickable link.
