@@ -97,7 +97,7 @@ function prefix_added_styles() {
         $custom_css = '
 		.bp-mobile:before {
 				content: "\f10b";
-				font-family: 'fontawesome';
+				font-family: "fontawesome";
 			}';
         wp_add_inline_style( 'bpfwp-default', $custom_css );
 }
