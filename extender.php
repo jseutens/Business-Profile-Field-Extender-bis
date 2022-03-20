@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Business Profile Field Extender
- * Plugin URI: http://wpbeaches.com
- * Description: Modifies the Business Profile plugin to include a mobile number field.
- * Version: 0.0.1
- * Author: Neil Gowran
- * Author URI: http://wpbeaches.com
+ * Plugin URI: https://github.com/jseutens/Business-Profile-Field-Extender-bis
+ * Description: Modifies the Business Profile plugin to include a mobile and fax number field.
+ * Version: 0.0.2
+ * Author: Neil Gowran / Johan Seutens
+ * Author URI: https://www.aati.be
  * @link - https://gist.github.com/NateWr/b28bb63ba8a73bb14eac
  */
 
@@ -49,12 +49,10 @@ add_filter( 'bpwfp_contact_card_defaults', 'prefix_contact_card_defaults' );
  */
 function prefix_contact_card_defaults( $defaults ) {
 	$defaults['show_mobile'] = true;
-	return $defaults;
-}
-function prefix_contact_card_defaults( $defaults ) {
 	$defaults['show_fax'] = true;
 	return $defaults;
 }
+
 add_filter( 'bpwfwp_component_callbacks', 'prefix_component_callbacks' );
 /**
  * Add to the callbacks and slot in at a certain place
