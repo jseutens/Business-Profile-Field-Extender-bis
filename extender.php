@@ -30,6 +30,15 @@ function prefix_add_settings( $sap ) {
 			'title'  => __( 'Mobile', BPFWP_TEXTDOMAIN ),
 		)
 	);
+		$sap->add_setting(
+		'bpfwp-settings',
+		'bpfwp-contact',
+		'text',
+		array(
+			'id'     => 'fax',
+			'title'  => __( 'Fax', BPFWP_TEXTDOMAIN ),
+		)
+	);
 	// Repeat the above array for further fields
 	return $sap;
 }
@@ -42,7 +51,10 @@ function prefix_contact_card_defaults( $defaults ) {
 	$defaults['show_mobile'] = true;
 	return $defaults;
 }
-
+function prefix_contact_card_defaults( $defaults ) {
+	$defaults['show_fax'] = true;
+	return $defaults;
+}
 add_filter( 'bpwfwp_component_callbacks', 'prefix_component_callbacks' );
 /**
  * Add to the callbacks and slot in at a certain place
@@ -64,6 +76,23 @@ function prefix_component_callbacks( $callbacks ) {
 	    }
     }
 	return $callbacks;
+	
+	 if ( $bpfwp_controller->settings->get_setting( 'fax' ) ) {
+		$callbacks['fax'] = 'prefix_print_fax';
+		$new_callbacks = array();
+		foreach( $callbacks as $key => $val ) {
+			$new_callbacks[$key] = $val;
+			// When you find the element you want to place it after,
+			// slot it in. This positions the new field where you want it - here it is being placed after the mobile field
+			if ( $key == 'mobile' ) {
+				$new_callbacks['fax'] = 'prefix_print_fax';
+			}
+			$callbacks = $new_callbacks;
+	    }
+    }
+	return $callbacks;
+}
+
 }
 
 /**
@@ -84,12 +113,26 @@ function prefix_print_mobile() {
 
 	<?php endif;
     }
-    
+
+function prefix_print_fax() {
+	// This is the mark up - is the same format as the original but has the number in a clickable link.
+	global $bpfwp_controller;
+	if ( $bpfwp_controller->display_settings['show_fax'] ) : ?>
+
+	<div class="bp-fax" itemprop="telephone">
+	<a href="tel:<?php echo (str_replace(' ','',$bpfwp_controller->settings->get_setting('fax') )); ?>"><?php echo $bpfwp_controller->settings->get_setting( 'mobile' ); ?></a>
+	</div>
+
+	<?php else : ?>
+	<meta itemprop="telephone" content="<?php echo esc_attr( $bpfwp_controller->settings->get_setting( 'fax' ) ); ?>">
+
+	<?php endif;
+    } 
 add_action( 'wp_enqueue_scripts', 'prefix_added_styles' );
 /**
  * Add the mobile icon with a bit of CSS and add via wp_add_inline_style to append to core Business Profile CSS - bpfwp-default
  */
-function prefix_added_styles() {
+function prefix_added_styles_mobile() {
 	wp_enqueue_style(
 		'bpfwp-default',
 		plugins_url() . '/business-profile/assets/css/contact-card.css'
@@ -101,3 +144,16 @@ function prefix_added_styles() {
 			}';
         wp_add_inline_style( 'bpfwp-default', $custom_css );
 }
+function prefix_added_styles_fax() {
+	wp_enqueue_style(
+		'bpfwp-default',
+		plugins_url() . '/business-profile/assets/css/contact-card.css'
+	);
+        $custom_css = '
+		.bp-fax:before {
+				content: "\f10b";
+				font-family: "fontawesome";
+			}';
+        wp_add_inline_style( 'bpfwp-default', $custom_css );
+}
+
