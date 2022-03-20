@@ -92,9 +92,6 @@ function prefix_component_callbacks( $callbacks ) {
     }
 	return $callbacks;
 }
-
-}
-
 /**
  * The callback - Print the mobile number
  * 
